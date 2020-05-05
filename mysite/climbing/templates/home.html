@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
-    {% block content %}
-
-
-<h1 style="">Home</h1>
-{% for grade in grades %}
-<h3> {{grade.name}}
-</h3>
-{%endfor%}
-
+{% block content %}
+{% csrf_token %}
+<div class="container" id="content" style="">
+    <h3>Logged in as {{user.username}}!</h3>
+</div>
 {% endblock %}
