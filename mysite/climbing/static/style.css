@@ -1,0 +1,55 @@
+#Menubar{
+		background:#000000!important;
+		height:auto;
+}
+@media screen and (min-width: 800px) {
+  right {
+    margin-left:200px;
+  }
+}
+
+a {
+    color: #fff;
+    font-weight:bold;
+}
+
+a:hover{
+    color:#FCA311;
+}
+
+body{
+    background:#FFFFFF;
+}
+
+#content{
+    background:#E5E5E5;
+    position:relative;
+    margin-top:25px;
+    height:auto;
+    padding:10px 20px 10px 20px;
+    border-radius:25px
+}
+
+#button,input{
+    background:#14213D;
+    border-radius:25px;
+    border:none;
+    color:#fff;
+    padding: 10px 20px 10px 20px;
+    text-align:center;
+}
+
+#button:hover{
+    background:rgba(4,8,15,1);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+        -webkit-box-shadow: 0 0 0 30px #767B91 inset !important;
+}
+
+.tooltip {
+    font-family: Arial,sans-serif !important;
+}

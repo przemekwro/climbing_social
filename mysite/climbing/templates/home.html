@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+    {% block content %}
+
+
+<h1 style="">Home</h1>
+{% for grade in grades %}
+<h3> {{grade.name}}
+</h3>
+{%endfor%}
+
+{% endblock %}
