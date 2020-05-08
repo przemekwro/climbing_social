@@ -1,5 +1,6 @@
 {% load static %}
 {% csrf_token %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +17,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <script defer src="{% static 'fontawesome/js/all.min.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-        <link rel="stylesheet" href="{% static 'css/glyph.css' %}">
+    <link rel="stylesheet" href="{% static 'css/glyph.css' %}">
 </head>
 <body>
 <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
@@ -26,38 +27,54 @@
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+
+
+
 </script>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a style="color:#FCA311" class="navbar-brand" href="/home">ClimbTogheter {{user.username}}</a>
+        <div class="col-md-12 col-lg">
+            <div class="row">
+                <div class="col-md-11 col-sm-10" style="display:block;">
+                    <a style="color:#FCA311" class="navbar-brand" href="/home">ClimbTogheter {{user.username}}</a>
+                </div>
+                <div class="col-md-1 col-sm-2">
+                    <button style="right:0px;" class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarNavAltMarkup"
+                            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div id="right">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav col-lg-4">
-                    <a class="nav-item nav-link" href="#">Home</a>
+                <div class="navbar-nav col-lg-4 col-md-12">
+                    <a class="nav-item nav-link active" href="/home">Home</a>
                     <a class="nav-item nav-link" href="#">Friends</a>
                     <a class="nav-item nav-link" href="#">History</a>
                     <a class="nav-item nav-link" href="#">Account</a>
                     {% if user.is_authenticated %}
-                        <a class="nav-item nav-link" href="/logout/">Logout</a>
+                    <a class="nav-item nav-link" href="/logout/">Logout</a>
                     {%endif%}
                 </div>
             </div>
         </div>
     </div>
 </nav>
+
+<div>
+<!-- messages -->
 {% if messages %}
 {% for message in messages %}
-
-<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+<div aria-live="polite" aria-atomic="true">
     <!-- Position it -->
-    <div style="position: absolute; top: 20px; right: 50; ">
+    <div style="position: absolute; top: 100px; right: 50px; ">
 
         <!-- Then put toasts within -->
-        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="30000"
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500"
              style="border-radius:30px;">
             <div class="toast-header">
                 <strong class="mr-auto">{{message}}</strong>
@@ -71,16 +88,48 @@ $(function () {
 <script>$('.toast').toast('show')</script>
 {% endfor %}
 {% endif %}
-
+</div>
 <div class="container">
     {% block content %}
     {% endblock %}
 </div>
 
-<footer style="bottom:0; height:auto; position:absolute; width:100%; background:#000; color:#FCA311" >
+<!-- footer -->
+<footer>
     <div class="d-flex justify-content-center">
         <h5>&copy Przemyslaw Wrona</h5>
     </div>
 </footer>
 
+
+<script>
+const realFileBtn = document.getElementById("real-file");
+const customBtn = document.getElementById("custom-button");
+const customTxt = document.getElementById("custom-text");
+
+customBtn.addEventListener("click", function() {
+  realFileBtn.click();
+});
+
+realFileBtn.addEventListener("change", function() {
+  if (realFileBtn.value) {
+    customTxt.innerHTML = realFileBtn.value.match(
+      /[\/\\]([\w\d\s\.\-\(\)]+)$/
+    )[1];
+  } else {
+    customTxt.innerHTML = "No file chosen, yet.";
+  }
+});
+
+
+function countChar(val) {
+            var len = val.value.length;
+            if (len >= 501) {
+                val.value = val.value.substring(0, 500);
+            } else {
+                $('#charNum').text(len);
+            }
+        };
+
+</script>
 </body>

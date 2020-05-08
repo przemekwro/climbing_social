@@ -26,8 +26,7 @@
                     </div>
                 </div>
                 <div class=" d-flex justify-content-center">
-                    <button type="submit" class="btn" id="button" style="font-weight:bold">Log in
-                    </button>
+                    <button type="submit" style="font-weight:bold">Log in</button>
                 </div>
             </form>
         </div>
@@ -38,14 +37,13 @@
 <div class="container" id="content">
     <h3>Most liked</h3>
     <div class="row no-gutters">
-
+        {% for post in most_liked%}
         <div class="col-lg col-md-12" id="small_content">
-
             <div class="row" id="post_username">
                 <img src="{%static 'pictures/pic (1).jpg' %}" style="height:25px; width:25px; border-radius:25px;">
-                <h5>User name</h5>
+                <h5>{{post.owner.username}}</h5>
             </div>
-            <p id="post_content">Lorem ipsum dolor sit amet.</p>
+            <p id="post_content">{{post.content}}</p>
             <img src="{%static 'pictures/pic (1).jpg' %}">
             <div class="row">
                 <div class="col-lg-2"></div>
@@ -59,66 +57,16 @@
                 <div class="col-lg-3">
                     <div class="row">
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                        <h5>25</h5>
+                        <h5>{{post.comment_counter}}</h5>
                     </div>
                     <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>
+        {%endfor%}
 
 
-        <div class="col-lg col-md-12" id="small_content">
-            <div class="row" id="post_username">
-                <img src="{%static 'pictures/pic (1).jpg' %}" style="height:25px; width:25px; border-radius:25px;">
-                <h5>User name</h5>
-            </div>
-            <p id="post_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin et accumsan augue,
-                in.</p>
-            <img style="width:100%;" src="{%static 'pictures/pic (1).jpg' %}">
-            <div class="row">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-3">
-                    <div class="row">
-                        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                        <h5>25</h5>
-                    </div>
-                </div>
-                <div class="col-lg-2"></div>
-                <div class="col-lg-3">
-                    <div class="row">
-                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                        <h5>25</h5>
-                    </div>
-                    <div class="col-lg-2"></div>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-lg col-md-12" id="small_content">
-            <div class="row" id="post_username">
-                <img src="{%static 'pictures/pic (1).jpg' %}" style="height:25px; width:25px; border-radius:25px;">
-                <h5>User name</h5>
-            </div>
-            <p id="post_content">Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
-            <img style="width:100%;" src="{%static 'pictures/pic (1).jpg' %}">
-            <div class="row">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-3">
-                    <div class="row">
-                        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                        <h5>25</h5>
-                    </div>
-                </div>
-                <div class="col-lg-2"></div>
-                <div class="col-lg-3">
-                    <div class="row">
-                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                        <h5>25</h5>
-                    </div>
-                    <div class="col-lg-2"></div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 {% endblock %}

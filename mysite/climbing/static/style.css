@@ -8,17 +8,30 @@
   }
 
 }
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 992px) {
   #small_content{
     margin:10px;
 }
+}
+
+
+footer{
+    bottom:0;
+    height:auto;
+    width:100%;
+    background:#000;
+    margin-top:25px;
+    color:#FCA311;
+    position:fixed;
 }
 
 a {
     color: #fff;
     font-weight:bold;
 }
-
+#paginator{
+    color:#000;
+}
 a:hover{
     color:#FCA311;
 }
@@ -31,12 +44,28 @@ body{
     background:#E5E5E5;
     position:relative;
     margin-top:25px;
+    margin-right:12px;
+    margin-left:12px;
+    margin-bottom:25px;
     height:auto;
     padding:10px 20px 10px 20px;
     border-radius:25px
 }
+
+#post{
+    padding:10px 20px 10px 20px;
+}
+
 img{
     width:100%;
+}
+
+#small_img{
+    height:25px;
+    width:25px;
+    border-radius:25px;
+    margin-right:10px;
+    margin-left:20px;
 }
 
 #small_content{
@@ -56,22 +85,23 @@ img{
 }
 
 
-#button,input{
+button,input{
     background:#14213D;
     border-radius:25px;
+    height:50px;
     border:none;
     color:#fff;
     padding: 10px 20px 10px 20px;
     text-align:center;
+    font-weight:bold;
 }
 
-#button:hover{
+button:hover{
+    cursor: pointer;
+    color:#FCA311;
     background:rgba(4,8,15,1);
 }
 
-#post_username{
-    margin-left:10px;
-}
 #post_content{
     margin-left:10px;
     margin-right:10px;
@@ -79,6 +109,11 @@ img{
 .glyphicon {
     font-size: 28px;
     color:#000;
+}
+button>.glyphicon{
+    color:#FCA311;
+    font-size: 20px;
+    margin-right:10px;
 }
 
 input:-webkit-autofill,
@@ -96,4 +131,52 @@ input:-webkit-autofill:active  {
   color: #FCA311;
   font-weight:bold;
   opacity: 1; /* Firefox */
+}
+
+
+
+
+
+// custom select
+select.decorated option:hover {
+    box-shadow: 0 0 10px 100px #1882A8 inset;
+    background:#AB0;
+}
+select:focus select > option:hover {
+    background: #000 !important;
+    outline:none;
+}
+option:hover{
+    background:yellow!important;
+}
+textarea{
+width:100%;
+outline:none;
+resize:none;
+border-radius:10px;
+padding:3px 5px 3px 5px;
+border:none;
+}
+
+
+
+// test
+.row.make-columns {
+    -moz-column-width: 19em;
+    -webkit-column-width: 19em;
+    -moz-column-gap: 1em;
+    -webkit-column-gap:1em;
+}
+
+.row.make-columns > div {
+    display: inline-block;
+    padding:  .5rem;
+    width:  100%;
+}
+
+ /* demo only* */
+.panel {
+    display: inline-block;
+    height: 100%;
+    width:  100%;
 }

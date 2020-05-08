@@ -1,7 +1,124 @@
 {% extends 'base.html' %}
 {% block content %}
 {% csrf_token %}
-<div class="container" id="content" style="">
-    <h3>Logged in as {{user.username}}!</h3>
+{%load static%}
+
+<div class="container">
+<!--Add Post here -->
+    <div class="row no-gutters">
+        <div id="content" class="col-lg col-md-12">
+            <form method="post" id="addPost">
+                {% csrf_token %}
+                <h5>Add post</h5>
+
+                <div class="" style="margin-bottom:10px">
+                    <textarea rows="10" maxlength="501" name="content" onkeyup="countChar(this)"
+                              placeholder="Write here what do you want to share..."></textarea>
+                    <div class="d-flex justify-content-end"><span id="charNum">0</span>/500</div>
+                </div>
+                <!--
+                <input type="file" id="real-file" hidden="true"/>
+                <button type="button" id="custom-button"><span class="glyphicon glyphicon-open"> </span>CHOOSE A FILE
+                </button>
+                <span id="custom-text">No file chosen, yet.</span>
+                 -->
+                <div class="d-flex justify-content-between no-gutters">
+                    <div class="p-2 bd-highlight">
+                        <p>TODO select</p>
+                    </div>
+
+                    <div class="p-2 bd-highlight">
+                        <button type="submit" class="button" style="font-weight:bold" name="addPost"> Add Post</button>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+
+        <div id="content" class="col-lg col-md-12">
+            <form method="post" id="addRoute">
+                {% csrf_token %}
+                <h5>Add ascend route</h5>
+                <div class="d-flex justify-content-center" style="margin-bottom:10px">
+                    <input id="username" type="text" name="username" placeholder="username">
+                </div>
+                <div class="d-flex justify-content-center" style="margin-bottom:10px">
+                    <input id="password" type="password" name="password" placeholder="password">
+                </div>
+                <div class=" d-flex justify-content-center">
+                    <button type="submit" style="font-weight:bold" name="addRoute">Add Route</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<!--Posts here -->
+    <div class="container ">
+        <h3> New Posts</h3>
+        <div class="row no-gutters">
+            {% for post in postList %}
+            <div class="col-lg col-md-12" id="content">
+                <a href="/post/{{post.id}}" style="text-decoration:none; color:#000; font-weight:normal;">
+                    <div class="row">
+                        <!-- miniaturka /  nazwa uzytkownika -->
+                        <img src="{%static 'pictures/pic (1).jpg' %}"
+                             id="small_img">
+                        <h5>{{post.owner.username}} {{post.id}}</h5>
+                    </div>
+                    <p>{{post.content}}</p>
+                    <div class="d-flex justify-content-end">
+                        <span class="" style="position:relative; font-size:14px;">{{post.added_date}}</span>
+                    </div>
+                    <img class="rounded" src="{%static 'pictures/pic (1).jpg' %}">
+                    <!-- komentarz like -->
+                    <div class="d-flex justify-content-around" id="comment_likes">
+                        <div class="p-2 bd-highlight">
+                            <div class="row">
+                                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                                <h5>25</h5>
+                            </div>
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <div class="row">
+                                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                                <h5>{{post.comment_counter}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            {% if forloop.counter|divisibleby:2 %}
+        </div>
+        <div class="row no-gutters">
+            {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+<!-- pagination here -->
+    <div class="d-flex justify-content-center">
+        <div class="pagination" style="margin-bottom:50px;">
+            <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" id="paginator">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}" id="paginator">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" id="paginator">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" id="paginator">last &raquo;</a>
+        {% endif %}
+    </span>
+        </div>
+    </div>
 </div>
 {% endblock %}

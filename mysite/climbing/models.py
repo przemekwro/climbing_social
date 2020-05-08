@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, User
 from django.db import models
+from django.conf import settings
 from enum import Enum
 
 # Create your models here.
@@ -50,9 +51,19 @@ class User(models.Model):
 
 
 class Post(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.ProtectedError)
-    content = models.CharField(max_length = 250)
-    route = models.ForeignKey(Route, on_delete=models.ProtectedError)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.ProtectedError)
+    content = models.CharField(max_length = 500)
+    route = models.ForeignKey(Route, on_delete=models.ProtectedError, null=True)
+    added_date = models.DateTimeField(auto_now_add=True, blank=True)
+    comment_counter = models.IntegerField(default=0, blank=True)
+    like_counter = models.IntegerField(default=0, blank=True)
+
+
+class Comment(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.ProtectedError)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    content = models.CharField(max_length=250)
+    added_date = models.DateTimeField(auto_now_add=True, blank=True)
 
 
 
