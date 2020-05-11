@@ -4,6 +4,9 @@ from django.conf import settings
 from enum import Enum
 
 # Create your models here.
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 class Terrain(models.Model):
     pion = 1
@@ -36,18 +39,27 @@ class History(models.Model):
     climber = models.ForeignKey(User, on_delete=models.ProtectedError, related_name="climber")
 
 
-class User(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, unique=True,on_delete=models.CASCADE, related_name="profile")
+    name = models.CharField(max_length=50, null=True)
+    lastname = models.CharField(max_length=50, null=True)
     is_student = models.BooleanField('student status', default=False)
     is_staff = models.BooleanField('staff status', default=False)
-    is_active = models.BooleanField(default=True)
-    best_route = models.ForeignKey(Route, on_delete=models.ProtectedError)
-    friends = models.ManyToManyField("self")
+    best_route = models.ForeignKey(Route, on_delete=models.ProtectedError, null=True)
+
+
 
     def __str__(self):
         return self.username+" "+self.name+" "+self.lastname;
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Post(models.Model):
@@ -64,6 +76,12 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.CharField(max_length=250)
     added_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+
+class Followers(models.Model):
+    follow_by = models.ForeignKey(User, on_delete=models.ProtectedError, related_name="follow_by")
+    follow_to = models.ForeignKey(User, on_delete=models.ProtectedError, related_name="follow_to")
+
 
 
 

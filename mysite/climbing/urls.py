@@ -7,10 +7,13 @@ urlpatterns = [
     path('', views.main, name='main'),
     path('home/', views.home, name="home"),
     path('register/', views.register, name="register"),
+    path('account/details/', views.account_update, name="account_update"),
     path('login/', views.loggedin, name="login"),
     path('logout/', views.logout_view, name="logout"),
-    path('test2/', views.test2, name="test2"),
-    path('post/<int:post_id>', views.post_details, name="post_details" )
+    path('post/<int:post_id>', views.post_details, name="post_details" ),
+    path('friends/', views.friends, name="friends"),
+    path('friends/observe/<int:user_id>', views.friends_observe,),
+    path('friends/delete/<int:follow_id>', views.friends_remove, ),
 ]
 
 

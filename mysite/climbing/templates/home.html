@@ -4,6 +4,8 @@
 {%load static%}
 
 <div class="container">
+
+
 <!--Add Post here -->
     <div class="row no-gutters">
         <div id="content" class="col-lg col-md-12">
@@ -35,7 +37,7 @@
 
             </form>
         </div>
-
+<!--
         <div id="content" class="col-lg col-md-12">
             <form method="post" id="addRoute">
                 {% csrf_token %}
@@ -51,10 +53,11 @@
                 </div>
             </form>
         </div>
+        -->
     </div>
 
 
-<!--Posts here -->
+<!--Show posts here -->
     <div class="container ">
         <h3> New Posts</h3>
         <div class="row no-gutters">
@@ -76,13 +79,13 @@
                     <div class="d-flex justify-content-around" id="comment_likes">
                         <div class="p-2 bd-highlight">
                             <div class="row">
-                                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-heart mr-2" aria-hidden="true"></span>
                                 <h5>25</h5>
                             </div>
                         </div>
                         <div class="p-2 bd-highlight">
                             <div class="row">
-                                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-comment mr-2" aria-hidden="true"></span>
                                 <h5>{{post.comment_counter}}</h5>
                             </div>
                         </div>

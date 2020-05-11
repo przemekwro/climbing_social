@@ -1,60 +1,82 @@
 {% extends 'base.html' %}
 {% block content %}
-<style>
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-}
+{%load static%}
+<div class=" no-gutters row">
+    <!-- Searching new friends -->
+    <div class="col-lg col-md-12" id="content">
+        <div class="">
+            <div class="justify-content-center d-flex">
+                <h4>
+                    Find new friends
+                </h4>
+            </div>
+            <div class="justify-content-center d-flex">
+                <form method="post">
+                    {%csrf_token%}
+                    <input type="text" name="username" id="username" minlength="3" placeholder="Write username"
+                           required>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </div>
 
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-  transition: opacity 0.3s;
-}
+        {% for search in search_list%}
+        <div class="row d-flex justify-content-between container" id="small_content" style="border-radius:25px">
+            <div class="row">
+                <img src="{%static 'pictures/pic (1).jpg' %}" style="height:25px; width:25px; border-radius:25px;">
+                <p class="pl-2">
+                    {{search.username}}
 
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
+                    {%if search.profile.name%}
+                    {{search.profile.name}}
+                    {%endif%}
+                </p>
+            </div>
+            <div>
+                <a style="height:40px" href="/friends/observe/{{search.id}}">
+                    <button style="height:40px;">Observe</button>
+                </a>
+            </div>
+        </div>
+        {%empty%}
+        {%endfor%}
 
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1!important;
-}
-.tooltip.show {
-    opacity: 0.5;
-}
-
-</style>
-
-<script>
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
-
-</script>
+    </div>
 
 
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
-  Tooltip on top
-</button>
+    <!-- Searching in your friends -->
+    <div class="col-lg col-md-12" id="content">
+        <div class="row no-gutters justify-content-center d-flex">
+            <div class="">
+                <h4>
+                    Your friend list
+                </h4>
+            </div>
+        </div>
+        <div>
+            <hr>
+            {% for friend in friend_list %}
+            <div class="row no-gutters">
+                <div class="col-lg">
+                    <img src="{%static 'pictures/pic (1).jpg' %}" style="height:25px; width:25px; border-radius:25px;">
+                    {{friend.follow_to.username}}
+                    {{friend.user.profile.name}}
+                </div>
+
+                <a href="/friends/delete/{{friend.id}}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+            </div>
+            <hr>
+            {% empty %}
+            <h5>Don't have friend yet.</h5>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+</div>
 
 
 {% endblock %}

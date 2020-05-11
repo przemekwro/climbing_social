@@ -5,21 +5,39 @@
 
 
     <!-- post details -->
-    <div id="content">
-        <div class="row">
-            <img id="small_img" src="{%static 'pictures/pic (1).jpg' %}">
-            <h5>{{post.owner.username}}</h5>
-        </div>
-
-        <div class="d-flex justify-content-end">
-            <span>{{post.added_date}}</span>
-        </div>
-        <div class="row no-gutters pb-3">
+    <div id="content" class="row no-gutters">
+        <div class="col-lg-6 no-gutters">
+            <!-- left side -->
+            <div class="row">
+                <img id="small_img" src="{%static 'pictures/pic (1).jpg' %}">
+                <h5>{{post.owner.username}}</h5>
+            </div>
             <div class="col-lg col-md-12">
                 <p>{{post.content}}</p>
             </div>
+        </div>
+        <div class="col-lg-6 no-gutters">
+            <!-- right side -->
+
             <div class="col-lg col-md-12">
                 <img class="rounded" src="{%static 'pictures/pic (1).jpg' %}">
+            </div>
+            <div class="d-flex justify-content-between container">
+                <div class="p-2">
+                    <div class="row">
+                        <span class="glyphicon glyphicon-heart mr-1" aria-hidden="true"></span>
+                        <h5>25</h5>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div class="row">
+                        <span class="glyphicon glyphicon-comment mr-1" aria-hidden="true"></span>
+                        <h5>{{post.comment_counter}}</h5>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <span>{{post.added_date}}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -43,11 +61,7 @@
 
     <!-- comments -->
     <div id="content" class="mb-8">
-        <hr style="background:#14213D">
-        {% if comment_List %}
-        <h5>No comments yet.</h5>
-        {% endif %}
-
+        <hr style="background:#ccc">
         {%for comment in comment_list%}
         <div id="comment">
             <div class="d-flex justify-content-between">
@@ -66,10 +80,11 @@
             <div>
                 <p> {{comment.content}}</p>
 
-                <hr style="background:#14213D">
-
+                <hr style="background:#ccc">
             </div>
         </div>
+        {% empty %}
+            <h5>No comments yet.</h5>
         {% endfor %}
     </div>
 </div>

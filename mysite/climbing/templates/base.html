@@ -32,7 +32,7 @@ $(function () {
 
 
 </script>
-
+<!-- navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <div class="col-md-12 col-lg">
@@ -52,12 +52,14 @@ $(function () {
         <div id="right">
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav col-lg-4 col-md-12">
-                    <a class="nav-item nav-link active" href="/home">Home</a>
-                    <a class="nav-item nav-link" href="#">Friends</a>
-                    <a class="nav-item nav-link" href="#">History</a>
-                    <a class="nav-item nav-link" href="#">Account</a>
                     {% if user.is_authenticated %}
+                    <a class="nav-item nav-link active" href="/home">Home</a>
+                    <a class="nav-item nav-link" href="/friends">Friends</a>
+                    <a class="nav-item nav-link" href="#">History</a>
+                    <a class="nav-item nav-link" href="/account/details">Account</a>
                     <a class="nav-item nav-link" href="/logout/">Logout</a>
+                    {%else%}
+                    <a class="nav-item nav-link" href="/register">Register</a>
                     {%endif%}
                 </div>
             </div>
@@ -65,11 +67,12 @@ $(function () {
     </div>
 </nav>
 
-<div>
 <!-- messages -->
+<div>
+
 {% if messages %}
 {% for message in messages %}
-<div aria-live="polite" aria-atomic="true">
+<div aria-live="polite" aria-atomic="true" style="z-index:100">
     <!-- Position it -->
     <div style="position: absolute; top: 100px; right: 50px; ">
 
@@ -89,6 +92,7 @@ $(function () {
 {% endfor %}
 {% endif %}
 </div>
+
 <div class="container">
     {% block content %}
     {% endblock %}
@@ -130,6 +134,8 @@ function countChar(val) {
                 $('#charNum').text(len);
             }
         };
+
+
 
 </script>
 </body>
