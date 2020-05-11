@@ -9,14 +9,9 @@ from django.views.generic import ListView
 
 from .forms import PostForm, CommentForm, UserChangeForm
 from .forms import SignUpF
-from .models import Grade, Post, User, Comment, UserProfile, Followers
+from .models import Grade, Post, User, Comment, UserProfile, Followers, Like
 from django.contrib import messages
 # Create your views here.
-
-
-class postList(ListView):
-    paginate_by = 2
-    model = Post
 
 
 def register(request):
@@ -53,7 +48,7 @@ def main(request):
         else:
             messages.error(request, "Invalid username or password.")
     form = AuthenticationForm()
-    most_liked = Post.objects.all().order_by('-comment_counter')[:3]
+    most_liked = Post.objects.all().order_by('-like_counter')[:3]
     return render(request, 'main.html', {'form': form, 'most_liked':most_liked})
 
 
@@ -74,6 +69,17 @@ def logout_view(request):
 
 def home(request):
     if request.user.is_authenticated:
+        my_followers = Followers.objects.filter(follow_by=request.user)
+        temp = []
+        for i in my_followers:
+            temp += Post.objects.filter(owner=i.follow_to)
+        temp += Post.objects.filter(owner=request.user)
+        temp.sort(key=lambda x: x.added_date, reverse=True)
+        post_List = temp
+        paginator = Paginator(post_List,2)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        post_List = paginator.get_page(page_number)
         if request.method == 'POST':
             if 'addPost' in request.POST:
                 form = PostForm(request.POST)
@@ -82,25 +88,10 @@ def home(request):
                     post.owner = request.user
                     post.save()
                     messages.success(request,"Post added")
-                    form = PostForm
-                    post_List= Post.objects.all().order_by('-added_date')
-                    #my_followers = Followers.objects.all(follow_by=request.user)
-                    paginator = Paginator(post_List, 12)  # Show 25 contacts per page.
-                    page_number = request.GET.get('page')
-                    page_obj = paginator.get_page(page_number)
-                    post_List = paginator.get_page(page_number)
-                    return render(request, 'home.html', {'form': form, 'postList': post_List, 'page_obj': page_obj,})
+                    return redirect('home')
                 else:
                     messages.success(request, "Error occured")
-                print("odebrano formularz post");
-            elif 'addRoute' in request.POST:
-                print("odebrano formularz route")
         form = PostForm
-        post_List = Post.objects.all().order_by('-added_date')
-        paginator = Paginator(post_List, 12)  # Show 25 contacts per page.
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        post_List = paginator.get_page(page_number)
         return render(request, 'home.html', {'form': form, 'postList':post_List, 'page_obj':page_obj})
     return redirect('main')
 
@@ -147,12 +138,10 @@ def friends_observe(request,user_id):
             if user_id == request.user.id:
                 messages.error(request,'Cannot add myself!')
                 return redirect('friends')
-            if not Followers.objects.get(follow_by=User.objects.get(id=request.user.id),follow_to=User.objects.get(id=user_id)):
-                follower = Followers(follow_by=User.objects.get(id=request.user.id),follow_to=User.objects.get(id=user_id))
-                follower.save()
-                messages.success(request,"Followed new person")
-            else:
-                messages.error(request,"You already follow that person.")
+            follower = Followers(follow_by=User.objects.get(id=request.user.id),follow_to=User.objects.get(id=user_id))
+            follower.save()
+            messages.success(request,"Followed new person")
+
             return redirect('friends')
         else:
             return redirect(request, 'friends')
@@ -178,3 +167,18 @@ def account_update(request):
         return render(request,'account_details.html',{'form':form,'post_list':post_list})
     return redirect('main')
 
+
+def post_like(request, post_id):
+    if request.user.is_authenticated:
+        user_likes = Like.objects.all().filter(owner=request.user)
+        post = Post.objects.get(id=post_id)
+        for like in user_likes:
+            if post_id == like.post.id and like.owner == request.user:
+                return redirect(request.META.get('HTTP_REFERER'))
+        like = Like(owner=request.user, post=post)
+        post.like_counter+=1
+        post.save()
+        like.save()
+        messages.success(request, "Like post");
+        print(request.META.get('HTTP_REFERER'))
+        return redirect(request.META.get('HTTP_REFERER'))

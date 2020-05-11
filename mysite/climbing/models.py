@@ -71,6 +71,11 @@ class Post(models.Model):
     like_counter = models.IntegerField(default=0, blank=True)
 
 
+class Like(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
 class Comment(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.ProtectedError)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)

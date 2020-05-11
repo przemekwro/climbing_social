@@ -14,6 +14,7 @@ urlpatterns = [
     path('friends/', views.friends, name="friends"),
     path('friends/observe/<int:user_id>', views.friends_observe,),
     path('friends/delete/<int:follow_id>', views.friends_remove, ),
+    path('post/like/<int:post_id>', views.post_like, ),
 ]
 
 

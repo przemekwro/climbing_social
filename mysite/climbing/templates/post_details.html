@@ -25,8 +25,12 @@
             <div class="d-flex justify-content-between container">
                 <div class="p-2">
                     <div class="row">
-                        <span class="glyphicon glyphicon-heart mr-1" aria-hidden="true"></span>
-                        <h5>25</h5>
+                        <div>
+                            <a href="/post/like/{{post.id}}">
+                                <span class="glyphicon glyphicon-heart mr-1" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <h5>{{post.like_counter}}</h5>
                     </div>
                 </div>
                 <div class="p-2">
@@ -84,7 +88,7 @@
             </div>
         </div>
         {% empty %}
-            <h5>No comments yet.</h5>
+        <h5>No comments yet.</h5>
         {% endfor %}
     </div>
 </div>

@@ -2,19 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1e63a8e-d07a-4124-85ff-705a5249b88e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/mysite/climbing/templates/account_details.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/migrations/0002_auto_20200508_1221.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/static/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/friends.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/friends.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/main.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/post_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/post_details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/test2.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/views.py" afterDir="false" />
     </list>
