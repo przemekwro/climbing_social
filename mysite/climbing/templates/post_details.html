@@ -27,7 +27,7 @@
                     <div class="row">
                         <div>
                             <a href="/post/like/{{post.id}}">
-                                <span class="glyphicon glyphicon-heart mr-1" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-heart mr-1" aria-hidden="true" style="{%if post.id == user_like%}color:#FCA311;{%else%}color:#000;{%endif%}"></span>
                             </a>
                         </div>
                         <h5>{{post.like_counter}}</h5>

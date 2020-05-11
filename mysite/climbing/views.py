@@ -14,6 +14,14 @@ from django.contrib import messages
 # Create your views here.
 
 
+def get_user_like(request):
+    temp = Like.objects.filter(owner=request.user)
+    user_like = []
+    for i in temp:
+        user_like.append(i.post.id)
+    return user_like
+
+
 def register(request):
     if request.method == 'POST':
         form = SignUpF(request.POST)
@@ -69,6 +77,7 @@ def logout_view(request):
 
 def home(request):
     if request.user.is_authenticated:
+        user_like=get_user_like(request)
         my_followers = Followers.objects.filter(follow_by=request.user)
         temp = []
         for i in my_followers:
@@ -92,7 +101,7 @@ def home(request):
                 else:
                     messages.success(request, "Error occured")
         form = PostForm
-        return render(request, 'home.html', {'form': form, 'postList':post_List, 'page_obj':page_obj})
+        return render(request, 'home.html', {'form': form, 'postList':post_List, 'page_obj':page_obj, 'user_like':user_like})
     return redirect('main')
 
 
@@ -110,14 +119,15 @@ def post_details(request,post_id):
                 post.comment_counter+=1
                 post.save()
                 #comment_list = Comment.objects.filter(post = post_id).order_by('-added_date')
-                return redirect('post_details', post_id=post_id)
             else:
                 messages.error(request,"Something went wrong")
-                return redirect(request,"post_details")
-
         post = Post.objects.get(id=post_id)
+        try:
+            user_like = Like.objects.get(post=post, owner=request.user).post.id
+        except Like.DoesNotExist:
+            user_like=None
         comment_list = Comment.objects.filter(post=post_id).order_by('-added_date')
-        return render(request,'post_details.html',{'post':post, 'comment_list':comment_list})
+        return render(request,'post_details.html',{'post':post, 'comment_list':comment_list,'user_like':user_like})
     return redirect('main')
 
 

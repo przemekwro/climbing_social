@@ -56,7 +56,6 @@
                 -->
     </div>
 
-
     <!--Show posts here -->
     <div class="container ">
         <h3> New Posts</h3>
@@ -82,8 +81,8 @@
                         <div class="row">
                             <div>
 
-                                <a method="" href="/post/like/{{post.id}}" value="{{request.path}}">
-                                    <span class="glyphicon glyphicon-heart mr-2" aria-hidden="true"></span></a>
+                                <a method="" href="/post/like/{{post.id}}" value="{{request.path}}" >
+                                    <span class="glyphicon glyphicon-heart mr-2" aria-hidden="true" style="{%if post.id in user_like%}color:#FCA311;{%else%}color:#000;{%endif%}"></span></a>
                             </div>
                             <h5>{{post.like_counter}}</h5>
                         </div>
