@@ -14,6 +14,25 @@ from django.contrib import messages
 # Create your views here.
 
 
+def get_my_followers(request):
+    my_followers = Followers.objects.filter(follow_by=request.user)
+    temp = []
+    for i in my_followers:
+        temp += Post.objects.filter(owner=i.follow_to)
+    temp += Post.objects.filter(owner=request.user)
+    temp.sort(key=lambda x: x.added_date, reverse=True)
+    return temp
+
+
+def get_my_followers_id(request):
+    my_followers = Followers.objects.filter(follow_by=request.user)
+    temp = []
+    for i in my_followers:
+        temp.append(i.follow_to.id)
+    temp.append(request.user.id)
+    return temp
+
+
 def get_user_like(request):
     temp = Like.objects.filter(owner=request.user)
     user_like = []
@@ -78,13 +97,7 @@ def logout_view(request):
 def home(request):
     if request.user.is_authenticated:
         user_like=get_user_like(request)
-        my_followers = Followers.objects.filter(follow_by=request.user)
-        temp = []
-        for i in my_followers:
-            temp += Post.objects.filter(owner=i.follow_to)
-        temp += Post.objects.filter(owner=request.user)
-        temp.sort(key=lambda x: x.added_date, reverse=True)
-        post_List = temp
+        post_List = get_my_followers(request)
         paginator = Paginator(post_List,2)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -136,7 +149,9 @@ def friends(request):
         friend_list = Followers.objects.filter(follow_by=request.user)
         if request.method == "POST":
             username = request.POST.get('username')
-            search_list = User.objects.all().filter(username__contains=username).exclude(id=request.user.id)[:15]
+            search_list = User.objects.filter(username__contains=username).exclude(id__in=get_my_followers_id(request))
+            if not search_list:
+                messages.info(request,"Can't find")
             return render(request,'friends.html',{'friend_list':friend_list,'search_list':search_list,})
         return render(request,'friends.html',{'friend_list':friend_list})
     return redirect('main')
