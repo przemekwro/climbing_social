@@ -4,6 +4,7 @@
     <list default="true" id="f1e63a8e-d07a-4124-85ff-705a5249b88e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysite/climbing/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mysite/climbing/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/climbing/views.py" afterDir="false" />
     </list>

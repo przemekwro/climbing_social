@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.urls import path
 from . import views
@@ -14,7 +15,7 @@ urlpatterns = [
     path('friends/', views.friends, name="friends"),
     path('friends/observe/<int:user_id>', views.friends_observe,),
     path('friends/delete/<int:follow_id>', views.friends_remove, ),
-    path('post/like/<int:post_id>', views.post_like, ),
+    url('post/like/', views.post_like, name="post_like"),
 ]
 
 

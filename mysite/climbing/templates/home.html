@@ -12,7 +12,6 @@
             <form method="post" id="addPost">
                 {% csrf_token %}
                 <h5>Add post</h5>
-
                 <div class="" style="margin-bottom:10px">
                     <textarea rows="10" maxlength="501" name="content" onkeyup="countChar(this)"
                               placeholder="Write here what do you want to share..."></textarea>
@@ -60,47 +59,49 @@
     <div class="container ">
         <h3> New Posts</h3>
         <div class="row no-gutters">
-            {% for post in postList %}
-            <div class="col-lg col-md-12" id="content">
-                <a href="/post/{{post.id}}" style="text-decoration:none; color:#000; font-weight:normal;">
+            {% for post in post_list %}
+            <div id="content" class="row no-gutters container">
+                <!-- left side -->
+                <div class="col-lg-6 no-gutters">
                     <div class="row">
-                        <!-- miniaturka /  nazwa uzytkownika -->
-                        <img src="{%static 'pictures/pic (1).jpg' %}"
-                             id="small_img">
-                        <h5>{{post.owner.username}} {{post.id}}</h5>
+                        <img id="small_img" src="{%static 'pictures/pic (1).jpg' %}">
+                        <h5>{{post.owner.username}}</h5>
                     </div>
-                    <p>{{post.content}}</p>
-                    <div class="d-flex justify-content-end">
-                        <span class="" style="position:relative; font-size:14px;">{{post.added_date}}</span>
+                    <div class="col-lg col-md-12">
+                        <p>{{post.content}}</p>
                     </div>
-                </a>
-                <img class="rounded" src="{%static 'pictures/pic (1).jpg' %}">
-                <!-- komentarz like -->
-                <div class="d-flex justify-content-around" id="comment_likes">
-                    <div class="p-2 bd-highlight">
-                        <div class="row">
-                            <div>
-
-                                <a method="" href="/post/like/{{post.id}}" value="{{request.path}}" >
-                                    <span class="glyphicon glyphicon-heart mr-2" aria-hidden="true" style="{%if post.id in user_like%}color:#FCA311;{%else%}color:#000;{%endif%}"></span></a>
+                </div>
+                <!-- right side -->
+                <div class="col-lg-6 no-gutters">
+                    <div class="col-lg col-md-12">
+                        <img class="rounded" src="{%static 'pictures/pic (1).jpg' %}">
+                    </div>
+                    <div class="d-flex justify-content-between container">
+                        <div class="p-2">
+                            <div class="row">
+                                <a >
+                                    <span  post_id="{{post.id}}" class="glyphicon glyphicon-heart mr-1 like"  id="heart"
+                                          style="{%if post.id in user_like%}color:#FCA311;{%else%}color:#000;{%endif%}"></span>
+                                </a>
+                                <h5 id="post_id{{post.id}}">{{post.like_counter}}</h5>
                             </div>
-                            <h5>{{post.like_counter}}</h5>
                         </div>
-                    </div>
-                    <div class="p-2 bd-highlight">
-                        <div class="row">
-                            <span class="glyphicon glyphicon-comment mr-2" aria-hidden="true"></span>
-                            <h5>{{post.comment_counter}}</h5>
+                        <div class="p-2">
+                            <div class="row">
+                                <span class="glyphicon glyphicon-comment mr-1" aria-hidden="true"></span>
+                                <h5>{{post.comment_counter}}</h5>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <span>{{post.added_date}}</span>
                         </div>
                     </div>
                 </div>
             </div>
-
-            {% if forloop.counter|divisibleby:1 %}
-        </div>
-        <div class="row no-gutters">
-            {% endif %}
+            {% empty %}
+            <h3>Don't have? You can publish <a href="/home">here</a></h3>
             {% endfor %}
+
 
         </div>
     </div>
@@ -121,7 +122,7 @@
             <a href="?page={{ page_obj.next_page_number }}" id="paginator">next</a>
             <a href="?page={{ page_obj.paginator.num_pages }}" id="paginator">last &raquo;</a>
         {% endif %}
-    </span>
+        </span>
         </div>
     </div>
 </div>

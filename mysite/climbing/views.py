@@ -1,12 +1,15 @@
+from urllib.request import urlopen
+
 from django.conf.global_settings import AUTH_USER_MODEL
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
-
+import json
 from .forms import PostForm, CommentForm, UserChangeForm
 from .forms import SignUpF
 from .models import Grade, Post, User, Comment, UserProfile, Followers, Like
@@ -114,7 +117,7 @@ def home(request):
                 else:
                     messages.success(request, "Error occured")
         form = PostForm
-        return render(request, 'home.html', {'form': form, 'postList':post_List, 'page_obj':page_obj, 'user_like':user_like})
+        return render(request, 'home.html', {'form': form, 'post_list':post_List, 'page_obj':page_obj, 'user_like':user_like})
     return redirect('main')
 
 
@@ -193,17 +196,26 @@ def account_update(request):
     return redirect('main')
 
 
-def post_like(request, post_id):
+
+def post_like(request):
+    print("called by ajax")
     if request.user.is_authenticated:
-        user_likes = Like.objects.all().filter(owner=request.user)
-        post = Post.objects.get(id=post_id)
-        for like in user_likes:
-            if post_id == like.post.id and like.owner == request.user:
-                return redirect(request.META.get('HTTP_REFERER'))
-        like = Like(owner=request.user, post=post)
-        post.like_counter+=1
-        post.save()
-        like.save()
-        messages.success(request, "Like post");
-        print(request.META.get('HTTP_REFERER'))
-        return redirect(request.META.get('HTTP_REFERER'))
+        if request.method=="POST":
+            data = request.POST
+            post_id = data['id']
+            user_likes = Like.objects.all().filter(owner=request.user)
+            post = Post.objects.get(id=post_id)
+            for like in user_likes:
+                print(like.post.id,post_id,like.owner, request.user)
+                if post.id == like.post.id and like.owner == request.user:
+                    print("asdads ad ad ad a a")
+                    return JsonResponse({'result':'error',})
+            like = Like(owner=request.user, post=post)
+            post.like_counter += 1
+            post.save()
+            like.save()
+            return JsonResponse({'result':'success', 'post_like':post.like_counter})
+
+
+
+

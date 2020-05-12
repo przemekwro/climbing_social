@@ -24,6 +24,32 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
+$(document).ready(function() {
+
+var token = '{{csrf_token}}';
+    $('.like').on('click', function() {
+
+        var post_id = $(this).attr('post_id');
+        var token = '{{csrf_token}}';
+        req = $.ajax({
+            headers: { "X-CSRFToken": token },
+            url : '/post/like/',
+            type : 'POST',
+            data : { id : post_id, },
+        });
+
+        req.done(function(data) {
+            $('#post_id'+post_id).fadeOut(1000);
+            setTimeout(function(){
+                $('#post_id'+post_id).text(data.post_like);
+            }, 1000);
+            $('#post_id'+post_id).fadeIn(1000);
+        });
+
+
+    });
+
+});
 
 
 
