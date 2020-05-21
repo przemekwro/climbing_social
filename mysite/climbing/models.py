@@ -33,21 +33,17 @@ class Route(models.Model):
     terrain = models.ForeignKey(Terrain, on_delete=models.ProtectedError)
 
 
-class History(models.Model):
-    route = models.ForeignKey(Route, on_delete=models.ProtectedError)
-    belayer = models.ForeignKey(User, on_delete=models.ProtectedError, related_name="belayer")
-    climber = models.ForeignKey(User, on_delete=models.ProtectedError, related_name="climber")
+#class History(models.Model):
+#    route = models.ForeignKey(Route, on_delete=models.ProtectedError)
+#    belayer = models.ForeignKey(User, on_delete=models.ProtectedError, related_name="belayer")
+#    climber = models.ForeignKey(User, on_delete=models.ProtectedError, related_name="climber")
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, unique=True,on_delete=models.CASCADE, related_name="profile")
-    name = models.CharField(max_length=50, null=True)
-    lastname = models.CharField(max_length=50, null=True)
-    is_student = models.BooleanField('student status', default=False)
-    is_staff = models.BooleanField('staff status', default=False)
+    picture = models.ImageField(null=True,upload_to='small/')
+    #is_staff = models.BooleanField('staff status', default=False)
     best_route = models.ForeignKey(Route, on_delete=models.ProtectedError, null=True)
-
-
 
     def __str__(self):
         return self.username+" "+self.name+" "+self.lastname;

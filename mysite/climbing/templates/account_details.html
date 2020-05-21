@@ -2,41 +2,84 @@
 {% block content %}
 {% load static %}
 <div>
-    <div class="container" id="content" style="">
-        <h3>Register now!</h3>
+    <div class="container mb-4" id="content">
+        {% if user_details is None %}
+        <div class="row">
+            <div class="col-lg-6 col-md-12" style="border-right:1px solid #ccc;">
+                <h5>Username: {{user.username}}</h5>
+                <h5>First name:{% if user.first_name %} {{user.first_name}} {%else%} Haven't set yet.{%endif%}</h5>
+                <h5>Last name: {% if user.last_name %} {{user.last_name}} {%else%} Haven't set yet.{%endif%}</h5>
+                <h5>Email: {{user.email}}</h5>
+                {% if user.profile.picture %}
+                <img class="rounded h-50 w-auto" src="{%get_media_prefix%}{{user.profile.picture}}">
+                {%else%}
+                <span class="glyphicon glyphicon-user" style="height:50px"></span>
+                {%endif%}
+            </div>
 
-        <form method="post">
-            {%csrf_token%}
-
-            {% for field in form %}
-            <div class="container" style="padding:0 0 0 0;">
-
-                <div class="d-flex justify-content-center mt-3">
-                    <div style="height:auto; width:auto" data-toggle="tooltip" data-placement="right"
-                         title="{{ field.help_text }}">
-                        {{ field }}
+            <div class="col-lg-6 col-md-12">
+                <form method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    {% for field in form %}
+                    <div class="container" style="padding:0 0 0 0;">
+                        <div class="d-flex justify-content-center mt-3">
+                            <div style="height:auto; width:auto" data-toggle="tooltip" data-placement="right"
+                                 title="{{ field.help_text }}">
+                                <div class="row justify-content-center">{{ field.label }}</div>
+                                <div class="row">{{ field }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                    {% endfor %}
+                    <div class=" d-flex justify-content-center mt-3">
+                        <button type="submit">Update</button>
+                    </div>
+                </form>
+        {%else%}
+                <!-- asd  -->
+                <div class="row">
+                    <div class="col-lg-6 col-md-12" style="border-right:1px solid #ccc;">
+                        <h5>Username: {{user_details.username}}</h5>
+                        <h5>First name:{% if user_details.first_name %} {{user_details.first_name}} {%else%} Haven't set
+                            yet.{%endif%}</h5>
+                        <h5>Last name: {% if user.last_name %} {{user_details.last_name}} {%else%} Haven't set
+                            yet.{%endif%}</h5>
+                        <h5>Email: {{user_details.email}}</h5>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        {% if user_details.profile.picture %}
+                        <img class="rounded" src="{%get_media_prefix%}{{user_details.profile.picture}}">
+                        {%else%}
+                        <span class="glyphicon glyphicon-picture" style="height:50px"></span>
+                        {%endif%}
                     </div>
                 </div>
+                {%endif%}
             </div>
-
-            {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-            {% endfor %}
-            {% endfor %}
-            <div class=" d-flex justify-content-center mt-3">
-                <button type="submit">Sign up</button>
-            </div>
-        </form>
-
+        </div>
     </div>
-    <div>
+
+
+    <div class="container">
+        {% if post_list%}
+        <div class="d-flex justify-content-center">
+            <h3>Posts</h3>
+        </div>
+        {%endif%}
         {% for post in post_list %}
         <div id="content" class="row no-gutters container">
             <!-- left side -->
             <div class="col-lg-6 no-gutters">
 
                 <div class="row">
-                    <img id="small_img" src="{%static 'pictures/pic (1).jpg' %}">
+                    {% if post.owner.profile.picture %}
+                    <img id="small_img" src="{%get_media_prefix%}{{post.owner.profile.picture}}">
+                    {%else%}
+                    <span class="glyphicon glyphicon-user" style="height:50px"></span>
+                    {%endif%}
                     <h5>{{post.owner.username}}</h5>
                 </div>
                 <div class="col-lg col-md-12">
@@ -51,8 +94,10 @@
                 <div class="d-flex justify-content-between container">
                     <div class="p-2">
                         <div class="row">
-                            <span class="glyphicon glyphicon-heart mr-1" aria-hidden="true"></span>
-                            <h5>25</h5>
+                                    <span post_id="{{post.id}}" name="love_{{post.id}}"
+                                          class="glyphicon glyphicon-heart mr-1 like" id="heart"
+                                          style="{%if post.id in user_like%}color:#FCA311;{%else%}color:#000;{%endif%} cursor: pointer;"></span>
+                            <h5 id="post_id{{post.id}}">{{post.like_counter}}</h5>
                         </div>
                     </div>
                     <div class="p-2">
@@ -68,7 +113,10 @@
             </div>
         </div>
         {% empty %}
-        <h3>Don't have? You can publish <a href="/home">here</a></h3>
+        <div class="container d-flex justify-content-center">
+            <h3>No posts.<a href="/home">here</a></h3>
+        </div>
+
         {% endfor %}
 
     </div>

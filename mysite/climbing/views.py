@@ -10,10 +10,12 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
 import json
-from .forms import PostForm, CommentForm, UserChangeForm
+from .forms import PostForm, CommentForm, UserChangeForm, UpdateUserForm
 from .forms import SignUpF
 from .models import Grade, Post, User, Comment, UserProfile, Followers, Like
 from django.contrib import messages
+
+
 # Create your views here.
 
 
@@ -68,10 +70,10 @@ def main(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username,password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
-                login(request,user)
-                messages.success(request,f'Logged in as: {username}')
+                login(request, user)
+                messages.success(request, f'Logged in as: {username}')
                 return redirect("home")
             else:
                 messages.error(request, "Invalid username or password.")
@@ -79,12 +81,12 @@ def main(request):
             messages.error(request, "Invalid username or password.")
     form = AuthenticationForm()
     most_liked = Post.objects.all().order_by('-like_counter')[:3]
-    return render(request, 'main.html', {'form': form, 'most_liked':most_liked})
+    return render(request, 'main.html', {'form': form, 'most_liked': most_liked})
 
 
 def loggedin(request):
     if request.user.is_authenticated:
-        return redirect(request,'')
+        return redirect(request, '')
     return render(request, 'main.html')
 
 
@@ -92,16 +94,16 @@ def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
     else:
-        messages.success(request,"You have to log in to log out. Pleas log in to log out.")
+        messages.success(request, "You have to log in to log out. Pleas log in to log out.")
         return redirect('main')
     return redirect('main')
 
 
 def home(request):
     if request.user.is_authenticated:
-        user_like=get_user_like(request)
+        user_like = get_user_like(request)
         post_List = get_my_followers(request)
-        paginator = Paginator(post_List,2)
+        paginator = Paginator(post_List, 2)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         post_List = paginator.get_page(page_number)
@@ -112,16 +114,17 @@ def home(request):
                     post = form.save(commit=False)
                     post.owner = request.user
                     post.save()
-                    messages.success(request,"Post added")
+                    messages.success(request, "Post added")
                     return redirect('home')
                 else:
                     messages.success(request, "Error occured")
         form = PostForm
-        return render(request, 'home.html', {'form': form, 'post_list':post_List, 'page_obj':page_obj, 'user_like':user_like})
+        return render(request, 'home.html',
+                      {'form': form, 'post_list': post_List, 'page_obj': page_obj, 'user_like': user_like})
     return redirect('main')
 
 
-def post_details(request,post_id):
+def post_details(request, post_id):
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = CommentForm(request.POST)
@@ -130,20 +133,21 @@ def post_details(request,post_id):
                 comment.owner = request.user
                 comment.post = Post.objects.get(id=post_id)
                 comment.save()
-                messages.success(request,"Comment added")
-                post = Post.objects.get(id = comment.post.id)
-                post.comment_counter+=1
+                messages.success(request, "Comment added")
+                post = Post.objects.get(id=comment.post.id)
+                post.comment_counter += 1
                 post.save()
-                #comment_list = Comment.objects.filter(post = post_id).order_by('-added_date')
+                # comment_list = Comment.objects.filter(post = post_id).order_by('-added_date')
             else:
-                messages.error(request,"Something went wrong")
+                messages.error(request, "Something went wrong")
         post = Post.objects.get(id=post_id)
         try:
             user_like = Like.objects.get(post=post, owner=request.user).post.id
         except Like.DoesNotExist:
-            user_like=None
+            user_like = None
         comment_list = Comment.objects.filter(post=post_id).order_by('-added_date')
-        return render(request,'post_details.html',{'post':post, 'comment_list':comment_list,'user_like':user_like})
+        return render(request, 'post_details.html',
+                      {'post': post, 'comment_list': comment_list, 'user_like': user_like})
     return redirect('main')
 
 
@@ -154,30 +158,30 @@ def friends(request):
             username = request.POST.get('username')
             search_list = User.objects.filter(username__contains=username).exclude(id__in=get_my_followers_id(request))
             if not search_list:
-                messages.info(request,"Can't find")
-            return render(request,'friends.html',{'friend_list':friend_list,'search_list':search_list,})
-        return render(request,'friends.html',{'friend_list':friend_list})
+                messages.info(request, "Can't find")
+            return render(request, 'friends.html', {'friend_list': friend_list, 'search_list': search_list, })
+        return render(request, 'friends.html', {'friend_list': friend_list})
     return redirect('main')
 
 
-def friends_observe(request,user_id):
+def friends_observe(request, user_id):
     if request.user.is_authenticated:
         if user_id:
             if user_id == request.user.id:
-                messages.error(request,'Cannot add myself!')
+                messages.error(request, 'Cannot add myself!')
                 return redirect('friends')
-            follower = Followers(follow_by=User.objects.get(id=request.user.id),follow_to=User.objects.get(id=user_id))
+            follower = Followers(follow_by=User.objects.get(id=request.user.id), follow_to=User.objects.get(id=user_id))
             follower.save()
-            messages.success(request,"Followed new person")
+            messages.success(request, "Followed new person")
 
             return redirect('friends')
         else:
             return redirect(request, 'friends')
     else:
-        return redirect(request,'main')
+        return redirect(request, 'main')
 
 
-def friends_remove(request,follow_id):
+def friends_remove(request, follow_id):
     if request.user.is_authenticated:
         if follow_id:
             follow = Followers.objects.get(id=follow_id)
@@ -188,34 +192,70 @@ def friends_remove(request,follow_id):
     return redirect('main')
 
 
-def account_update(request):
+def account_details(request, account_id):
     if request.user.is_authenticated:
-        post_list = Post.objects.all().filter(owner=request.user)
-        form = UserChangeForm
-        return render(request,'account_details.html',{'form':form,'post_list':post_list})
+        if request.method == 'POST':
+            update_account(request)
+        try:
+            account = User.objects.get(id=account_id)
+        except User.DoesNotExist:
+            messages.error(request, "User doesn't exist. ")
+            return redirect('main')
+        user_like = get_user_like(request)
+        post_list = Post.objects.all().filter(owner=account)
+        if request.user.id == account_id:
+            form = UpdateUserForm
+            return render(request, 'account_details.html',
+                          {'form': form, 'post_list': post_list, 'user_like': user_like})
+        user_details = User.objects.get(id=account_id)
+        return render(request, 'account_details.html',
+                      {'user_details': user_details, 'post_list': post_list, 'user_like': user_like})
     return redirect('main')
 
+
+def update_account(request):
+    form = UpdateUserForm(request.POST, request.FILES)
+    if form.is_valid():
+        userProfile = UserProfile.objects.get(user=request.user)
+
+        picture = form.cleaned_data['image']
+        if picture is not None:
+            userProfile.picture = picture
+            userProfile.save()
+
+        user = User.objects.get(id=request.user.id)
+        first_name = form.cleaned_data['first_name']
+        if first_name is not None:
+            user.first_name = first_name
+            user.save(update_fields=['first_name'])
+
+        last_name = form.cleaned_data['last_name']
+        if last_name is not None:
+            user.last_name = last_name
+            user.save(update_fields=['last_name'])
+
+        email = form.cleaned_data['email']
+        if email is not None:
+            user.email = email
+            user.save(update_fields=['email'])
+
+
+        return redirect('account_details',request.user.id)
 
 
 def post_like(request):
     print("called by ajax")
     if request.user.is_authenticated:
-        if request.method=="POST":
+        if request.method == "POST":
             data = request.POST
             post_id = data['id']
             user_likes = Like.objects.all().filter(owner=request.user)
             post = Post.objects.get(id=post_id)
             for like in user_likes:
-                print(like.post.id,post_id,like.owner, request.user)
                 if post.id == like.post.id and like.owner == request.user:
-                    print("asdads ad ad ad a a")
-                    return JsonResponse({'result':'error',})
+                    return JsonResponse({'result': 'error', })
             like = Like(owner=request.user, post=post)
             post.like_counter += 1
             post.save()
             like.save()
-            return JsonResponse({'result':'success', 'post_like':post.like_counter})
-
-
-
-
+            return JsonResponse({'result': 'success', 'post_like': post.like_counter})

@@ -30,6 +30,7 @@ var token = '{{csrf_token}}';
     $('.like').on('click', function() {
 
         var post_id = $(this).attr('post_id');
+        var glyph = $('span[name="love_'+post_id+'"]');
         var token = '{{csrf_token}}';
         req = $.ajax({
             headers: { "X-CSRFToken": token },
@@ -38,15 +39,18 @@ var token = '{{csrf_token}}';
             data : { id : post_id, },
         });
 
+
         req.done(function(data) {
-            $('#post_id'+post_id).fadeOut(1000);
+            $('#post_id'+post_id).fadeOut(500);
+            glyph.fadeOut(500);
             setTimeout(function(){
                 $('#post_id'+post_id).text(data.post_like);
-            }, 1000);
-            $('#post_id'+post_id).fadeIn(1000);
+                glyph.attr('style','color: #FCA311');
+            }, 500);
+            $('#post_id'+post_id).fadeIn(500);
+            glyph.fadeIn(500);
+
         });
-
-
     });
 
 });
@@ -78,7 +82,7 @@ var token = '{{csrf_token}}';
                     <a class="nav-item nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="/home">Home</a>
                     <a class="nav-item nav-link {% if request.resolver_match.url_name == 'friends' %}active{% endif %}" href="/friends">Friends</a>
                     <!--<a class="nav-item nav-link {% if request.resolver_match.url_name == 'history' %}active{% endif %}" href="#">History</a>-->
-                    <a class="nav-item nav-link {% if request.resolver_match.url_name == 'account_details' %}active{% endif %}" href="/account/details">Account</a>
+                    <a class="nav-item nav-link {% if request.resolver_match.url_name == 'account_details' %}active{% endif %}" href="/account/details/{{request.user.id}}">Account</a>
                     <a class="nav-item nav-link" href="/logout/">Logout</a>
                     {%else%}
                     <a class="nav-item nav-link" href="/register">Register</a>
@@ -93,9 +97,9 @@ var token = '{{csrf_token}}';
 <div>
 {% if messages %}
 {% for message in messages %}
-<div aria-live="polite" aria-atomic="true" style="z-index:100">
+<div aria-live="polite" aria-atomic="true" >
     <!-- Position it -->
-    <div style="position: absolute; top: 100px; right: 50px; ">
+    <div style="position: fixed; top: 100px; right: 50px; z-index:1; ">
 
         <!-- Then put toasts within -->
         <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500"

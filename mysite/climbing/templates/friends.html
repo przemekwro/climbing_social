@@ -59,8 +59,11 @@
             <div class="row no-gutters">
                 <div class="col-lg">
                     <img src="{%static 'pictures/pic (1).jpg' %}" style="height:25px; width:25px; border-radius:25px;">
-                    {{friend.follow_to.username}}
-                    {{friend.user.profile.name}}
+                   <a href="/account/details/{{friend.follow_to.id}}">
+                       {{friend.follow_to.username}}
+                   </a>
+
+                    {{friend.user.username}}
                 </div>
 
                 <a href="/friends/delete/{{friend.id}}">

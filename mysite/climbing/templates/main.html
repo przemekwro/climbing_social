@@ -39,27 +39,34 @@
     <div class="row no-gutters">
         {% for post in most_liked%}
         <div class="col-lg col-md-12" id="small_content">
-            <div class="row" id="post_username">
-                <img src="{%static 'pictures/pic (1).jpg' %}" style="height:25px; width:25px; border-radius:25px;">
-                <h5>{{post.owner.username}}</h5>
+            <div class="row">
+                {% if post.owner.profile.picture %}
+                <img id="small_img" src="{%get_media_prefix%}{{post.owner.profile.picture}}">
+                {%else%}
+                <span class="glyphicon glyphicon-picture" style="height:50px"></span>
+                {%endif%}
+                <a href="/account/details/{{post.owner.id}}">
+                    <h5>{{post.owner.username}}</h5>
+                </a>
             </div>
             <p id="post_content">{{post.content}}</p>
             <img src="{%static 'pictures/pic (1).jpg' %}">
-            <div class="row">
-                <div class="col-lg-2"></div>
-                <div class="col-lg-3">
+            <div class="d-flex justify-content-between container">
+                <div class="p-2">
                     <div class="row">
-                        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                        <h5>{{post.like_counter}}</h5>
+                                    <span post_id="{{post.id}}" name="love_{{post.id}}"
+                                          class="glyphicon glyphicon-heart mr-1 like" id="heart"
+                                          style="{%if post.id in user_like%}color:#FCA311;{%else%}color:#000;{%endif%} cursor: pointer;"></span>
+                        <h5 id="post_id{{post.id}}">{{post.like_counter}}</h5>
                     </div>
                 </div>
-                <div class="col-lg-2"></div>
-                <div class="col-lg-3">
+                <div class="p-2">
                     <div class="row">
-                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                        <a href="/post/{{post.id}}">
+                            <span class="glyphicon glyphicon-comment mr-1 like"></span>
+                        </a>
                         <h5>{{post.comment_counter}}</h5>
                     </div>
-                    <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>

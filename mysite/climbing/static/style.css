@@ -1,3 +1,7 @@
+*{
+    z-index:0;
+}
+
 #Menubar{
 		background:#000000!important;
 		height:auto;
@@ -35,6 +39,14 @@ a {
 a:hover{
     color:#FCA311;
 }
+div>a{
+    color:#000;
+    text-decoration:none;
+}
+div>a:hover{
+    color:#FCA311;
+    text-decoration:none;
+}
 
 body{
     background:#FFFFFF;
@@ -61,8 +73,8 @@ img{
 }
 
 #small_img{
-    height:25px;
-    width:25px;
+    height:40px;
+    width:40px;
     border-radius:25px;
     margin-right:10px;
     margin-left:20px;
