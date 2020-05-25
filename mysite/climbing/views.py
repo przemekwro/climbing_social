@@ -103,16 +103,21 @@ def home(request):
     if request.user.is_authenticated:
         user_like = get_user_like(request)
         post_List = get_my_followers(request)
-        paginator = Paginator(post_List, 2)
+        paginator = Paginator(post_List, 12)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         post_List = paginator.get_page(page_number)
         if request.method == 'POST':
             if 'addPost' in request.POST:
-                form = PostForm(request.POST)
+                form = PostForm(request.POST, request.FILES)
                 if form.is_valid():
+                    picture = form.cleaned_data['image']
+                    content = form.cleaned_data['content']
+                    print('picture: ', picture)
+                    print('content: ', content)
                     post = form.save(commit=False)
                     post.owner = request.user
+                    post.picture = picture
                     post.save()
                     messages.success(request, "Post added")
                     return redirect('home')
@@ -221,7 +226,7 @@ def update_account(request):
         picture = form.cleaned_data['image']
         if picture is not None:
             userProfile.picture = picture
-            userProfile.save()
+            userProfile.save(update_fields=['picture'])
 
         user = User.objects.get(id=request.user.id)
         first_name = form.cleaned_data['first_name']

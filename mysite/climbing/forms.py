@@ -11,17 +11,14 @@ class SignUpF(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
 
-class UserChangeForm(UserChangeForm):
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email',)
-
 
 class PostForm(forms.ModelForm):
+    image = forms.ImageField(required=False)
+    content = forms.CharField(widget=forms.Textarea, )
+
     class Meta:
         model = Post
-        content = forms.CharField(widget=forms.Textarea, )
-        fields = ('content',)
+        fields = ('content','image')
 
 
 class UpdateUserForm(forms.ModelForm):

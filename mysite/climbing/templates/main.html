@@ -43,14 +43,17 @@
                 {% if post.owner.profile.picture %}
                 <img id="small_img" src="{%get_media_prefix%}{{post.owner.profile.picture}}">
                 {%else%}
-                <span class="glyphicon glyphicon-picture" style="height:50px"></span>
+                <span class="glyphicon glyphicon-user" style="height:50px"></span>
                 {%endif%}
                 <a href="/account/details/{{post.owner.id}}">
                     <h5>{{post.owner.username}}</h5>
                 </a>
             </div>
             <p id="post_content">{{post.content}}</p>
-            <img src="{%static 'pictures/pic (1).jpg' %}">
+
+            {% if post.picture %}
+            <img src="{%get_media_prefix%}{{post.picture}}">
+            {%endif%}
             <div class="d-flex justify-content-between container">
                 <div class="p-2">
                     <div class="row">

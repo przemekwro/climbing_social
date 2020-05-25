@@ -3,13 +3,13 @@
 {% csrf_token %}
 {%load static%}
 
-<div >
+<div>
 
 
     <!--Add Post here -->
     <div class="row no-gutters">
         <div id="content" class="col-lg col-md-12">
-            <form method="post" id="addPost">
+            <form method="post" id="addPost" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h5>Add post</h5>
                 <div class="" style="margin-bottom:10px">
@@ -17,17 +17,17 @@
                               placeholder="Write here what do you want to share..."></textarea>
                     <div class="d-flex justify-content-end"><span id="charNum">0</span>/500</div>
                 </div>
-                <!--
-                <input type="file" id="real-file" hidden="true"/>
-                <button type="button" id="custom-button"><span class="glyphicon glyphicon-open"> </span>CHOOSE A FILE
-                </button>
-                <span id="custom-text">No file chosen, yet.</span>
-                 -->
-                <div class="d-flex justify-content-between no-gutters">
-                    <div class="p-2 bd-highlight">
-                        <p>TODO select</p>
-                    </div>
 
+
+                <div class="d-flex justify-content-between no-gutters">
+                    <div>
+
+                        <input type="file" name="image" id="real-file" accept="image/*" hidden="true" />
+                        <button type="button" id="custom-button"><span class="glyphicon glyphicon-open"> </span>CHOOSE A
+                            FILE
+                        </button>
+                        <span id="custom-text">No file chosen, yet.</span>
+                    </div>
                     <div class="p-2 bd-highlight">
                         <button type="submit" class="button" style="font-weight:bold" name="addPost"> Add Post</button>
                     </div>
@@ -65,9 +65,9 @@
                 <div class="col-lg-6 no-gutters">
                     <div class="row">
                         {% if post.owner.profile.picture %}
-                        <img id="small_img"  src="{%get_media_prefix%}{{post.owner.profile.picture}}">
+                        <img id="small_img" src="{%get_media_prefix%}{{post.owner.profile.picture}}">
                         {%else%}
-                        <span class="glyphicon glyphicon-picture" style="height:50px"></span>
+                        <span class="glyphicon glyphicon-user" style="height:50px"></span>
                         {%endif%}
                         <a href="/account/details/{{post.owner.id}}">
                             <h5>{{post.owner.username}}</h5>
@@ -80,7 +80,10 @@
                 <!-- right side -->
                 <div class="col-lg-6 no-gutters">
                     <div class="col-lg col-md-12">
-                        <img class="rounded" src="{%static 'pictures/pic (1).jpg' %}">
+                        {% if post.picture %}
+                        <img class="rounded" src="{%get_media_prefix%}{{post.picture}}">
+                        {%endif%}
+
                     </div>
                     <div class="d-flex justify-content-between container">
                         <div class="p-2">

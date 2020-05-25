@@ -61,6 +61,7 @@ def save_user_profile(sender, instance, **kwargs):
 class Post(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.ProtectedError)
     content = models.CharField(max_length = 500)
+    picture = models.ImageField(null=True, upload_to='post/')
     route = models.ForeignKey(Route, on_delete=models.ProtectedError, null=True)
     added_date = models.DateTimeField(auto_now_add=True, blank=True)
     comment_counter = models.IntegerField(default=0, blank=True)
